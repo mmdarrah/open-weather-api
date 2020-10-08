@@ -10,6 +10,7 @@
 
 <main>
 <h1>Open Weather API</h1>
+<!-- Sign in form  seed the data to signup.inc.php-->
 <div class="container">
 <form action="includes/signup.inc.php" method="post">
 <input type="text" name="userName" placeholder="Name" required >

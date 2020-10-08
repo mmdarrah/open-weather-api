@@ -1,5 +1,7 @@
 <?php
-session_start(); //start the session
+//start the session if a user is signed in the user id will be in the session
+//This way the app will now the state of the user
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,12 +9,10 @@ session_start(); //start the session
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-
     <title>Open Weather API</title>
 </head>
 <body>
 <main>
-
 <div class="container">
 <?php
 if (isset($_SESSION['userId'])) { //if the session contains a user id the user will be logged in
@@ -22,24 +22,32 @@ if (isset($_SESSION['userId'])) { //if the session contains a user id the user w
     echo '<p>Hi <span>' . $_SESSION['userName'] . '</span> you are logged in</p>'; //Greeting message with concatenating of the username from session
 
     require './includes/dbh.inc.php'; // Database connection
+    //Since the id saved in the session no need to SANITIZE it
     $userId = $_SESSION['userId'];
-
+    // get the user favorites cites from the database
     $sql = "SELECT * FROM cities WHERE userid = $userId";
     $result = mysqli_query($conn, $sql);
     $resultCheck = mysqli_num_rows($result);
-
+    // Check if the user had saved cites in favorite
     if ($resultCheck > 0) {
         echo '<div class="card-container">';
         while ($row = mysqli_fetch_assoc($result)) {
+            //The API request quntaine three part (url + city name + personal key)
             $url = 'http://api.openweathermap.org/data/2.5/weather?q=' . $row['city'] . ',se&units=metric&appid=094de54eaefc73af48abd522583f9e5a';
+            //Get the results in JSON
             $weather_json = file_get_contents($url);
+            //Put the Result in Array
             $weather_array = json_decode($weather_json, true);
+            //Put the data in variables
             $temp = $weather_array['main']['temp'];
+            //remove the decimals
+            $temp = (int) $temp;
             $icon = $weather_array['weather'][0]['icon'];
             $description = $weather_array['weather'][0]['description'];
             $city = $weather_array['name'];
             $city = $weather_array['name'];
 
+            //Show the card in HTML
             echo '<form action="includes/delete.inc.php" method="post">
             <div class="card">
                     <img src="http://openweathermap.org/img/wn/' . $icon . '@2x.png" class="card-img-top" alt="Avatar"">
@@ -55,8 +63,9 @@ if (isset($_SESSION['userId'])) { //if the session contains a user id the user w
         }
         echo '</div>';
     }
-
+    //Add city to get the weather
     echo '<form action="includes/city.inc.php" method="post">
+            <label>Search for weather by your city name: </label></br>
             <input type="text" name="city" placeholder="City">
             <button type="submit" name="city-submit" >Submit</button>
         </form>';

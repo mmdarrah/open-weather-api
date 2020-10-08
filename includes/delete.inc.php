@@ -7,8 +7,8 @@ if (isset($_POST['delete'])) {
 
     require 'dbh.inc.php'; // Database connection
 
-    //Data from user
-    $favCity = $_POST['favCity'];
+    //SANITIZE data ($favCity) from user and put it in variable
+    $favCity = filter_var($_POST['favCity'], FILTER_SANITIZE_SPECIAL_CHARS);
     $userid = $_SESSION["userId"];
 
     $sql = "DELETE FROM cities Where city = '$favCity' AND userid = '$userid'";
