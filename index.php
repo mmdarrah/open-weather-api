@@ -28,12 +28,14 @@ if (isset($_SESSION['userId'])) { //if the session contains a user id the user w
     $sql = "SELECT * FROM cities WHERE userid = $userId";
     $result = mysqli_query($conn, $sql);
     $resultCheck = mysqli_num_rows($result);
+    //My personal key from open weather API
+    $personalKey = ',se&units=metric&appid=094de54eaefc73af48abd522583f9e5a';
     // Check if the user had saved cites in favorite
     if ($resultCheck > 0) {
         echo '<div class="card-container">';
         while ($row = mysqli_fetch_assoc($result)) {
             //The API request quntaine three part (url + city name + personal key)
-            $url = 'http://api.openweathermap.org/data/2.5/weather?q=' . $row['city'] . ',se&units=metric&appid=094de54eaefc73af48abd522583f9e5a';
+            $url = 'http://api.openweathermap.org/data/2.5/weather?q=' . $row['city'] . $personalKey;
             //Get the results in JSON
             $weather_json = file_get_contents($url);
             //Put the Result in Array

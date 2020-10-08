@@ -17,9 +17,11 @@ if (isset($_POST['city-submit'])) {
 
     //SANITIZE data from user and put it in variables
     $city = filter_var($_POST['city'], FILTER_SANITIZE_SPECIAL_CHARS);
+    //My personal key from open weather API
+    $personalKey = ',se&units=metric&appid=094de54eaefc73af48abd522583f9e5a';
     echo '<p>Hi <span>' . $_SESSION['userName'] . '</span> you can add <span>' . $city . '</span> to your favorite by clicking the add button.</p>'; //Greeting message with concatenating of the username from session
     //The API request quntaine three part (url + city name + personal key)
-    $url = 'http://api.openweathermap.org/data/2.5/weather?q=' . $city . ',se&units=metric&appid=094de54eaefc73af48abd522583f9e5a';
+    $url = 'http://api.openweathermap.org/data/2.5/weather?q=' . $city . $personalKey;
     //Get the results in JSON
     $weather_json = @file_get_contents($url);
     if ($weather_json === false) {
