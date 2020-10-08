@@ -49,7 +49,9 @@ if (isset($_POST['city-submit'])) {
                 <input type="hidden" name="favCity" value="' . $city . '">
                 <button type="submit" name="city">Add to favorites</button>
             </div>
+            <a href="../index.php" >Back to home page</a>
             </form>';
+
     }
 
 } else {

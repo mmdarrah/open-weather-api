@@ -68,14 +68,14 @@ if (isset($_SESSION['userId'])) { //if the session contains a user id the user w
     //Add city to get the weather
     echo '<form action="includes/city.inc.php" method="post">
             <label>Search for weather by your city name: </label></br>
-            <input type="text" name="city" placeholder="City">
+            <input type="text" name="city" placeholder="City" required>
             <button type="submit" name="city-submit" >Submit</button>
         </form>';
 
 } else { //if the session is empty the login form will appear
     echo '<form action="includes/login.inc.php" method="post">
-        <input type="text" name="userName" placeholder="Name">
-        <input type="password" name="password" placeholder="Password">
+        <input type="text" name="userName" placeholder="Name" required>
+        <input type="password" name="password" placeholder="Password" required>
         <button type="submit" name="login-submit" >Login</button>
         </form>
         <a href="signup.php" >Sign up</a>';
